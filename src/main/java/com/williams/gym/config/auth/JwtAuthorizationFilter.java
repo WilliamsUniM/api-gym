@@ -2,14 +2,14 @@ package com.williams.gym.config.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -35,7 +35,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
       String accessToken = jwtUtil.resolveToken(request);
 
       if (accessToken == null ) {
-        throw new ServletException("Invalid Token");
+        filterChain.doFilter(request, response);
+        return;
       }
 
       log.info("token : {}", accessToken);

@@ -33,20 +33,13 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    http.csrf(AbstractHttpConfigurer::disable)
+    http.csrf().disable()
         .cors(Customizer.withDefaults())
-        .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests
-                .anyRequest().authenticated()
-        )
-        .formLogin( formLogin ->
-            formLogin
-                .loginPage("/login")
-                .permitAll()
-        )
-        .sessionManagement(sessionManagement ->
-            sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        .authorizeRequests()
+        .mvcMatchers("/login").permitAll()
+        .anyRequest().authenticated()
+        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
   }

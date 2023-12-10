@@ -8,29 +8,36 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@Builder
 @Entity
-@Table(name = "users")
+@Table(name = "clients")
 @NoArgsConstructor
-public class User {
+@AllArgsConstructor
+public class Client {
 
   @Id
   @GeneratedValue(strategy= GenerationType.IDENTITY)
   private long id;
 
+  @Column(name = "document", nullable = false, unique = true)
+  private long document;
+
+  @Column(name = "name", nullable = false, length = 100)
+  private String name;
+
   @Column(name = "email", nullable = false, length = 100)
   private String email;
 
-  @Column(name = "password", nullable = false, length = 100)
-  private String password;
-
-  @Column(name = "admin", nullable = false, length = 1)
-  private int admin;
+  @Column(name = "phone", nullable = false, length = 10)
+  private long phone;
 
   @OneToOne
   @JoinColumn(name = "site", nullable = false)
